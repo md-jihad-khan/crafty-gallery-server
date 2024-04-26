@@ -26,6 +26,11 @@ async function run() {
     const database = client.db("Craft-DB");
     const craftCollection = database.collection("coffees");
 
+    app.post("/craft", async (req, res) => {
+      const craft = req.body;
+      const result = await craftCollection.insertOne(craft);
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
