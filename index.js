@@ -24,8 +24,13 @@ async function run() {
     await client.connect();
 
     const database = client.db("Craft-DB");
-    const craftCollection = database.collection("coffees");
+    const craftCollection = database.collection("craft");
 
+    app.get("/crafts", async (req, res) => {
+      const cursor = craftCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
     app.post("/craft", async (req, res) => {
       const craft = req.body;
       const result = await craftCollection.insertOne(craft);
