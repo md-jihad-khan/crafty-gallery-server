@@ -25,13 +25,18 @@ async function run() {
 
     const database = client.db("Craft-DB");
     const craftCollection = database.collection("craft");
+    const craftCategoriesCollection = database.collection("craft-categories");
 
     app.get("/crafts", async (req, res) => {
       const cursor = craftCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
-
+    app.get("/craftsCategory", async (req, res) => {
+      const cursor = craftCategoriesCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
     app.get("/craft/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
