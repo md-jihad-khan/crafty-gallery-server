@@ -40,10 +40,16 @@ async function run() {
     });
     app.get("/crafts/:email", async (req, res) => {
       const email = req.params.email;
+      const customization = req.query.customization;
+
       const query = {
         user_Email: email,
       };
-      console.log(query);
+
+      if (customization) {
+        query.customization = customization;
+      }
+
       const cursor = craftCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
