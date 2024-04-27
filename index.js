@@ -31,6 +31,14 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+
+    app.get("/craft/:id", async (req, res) => {
+      const id = req.params;
+      const query = { _id: new ObjectId(id) };
+      const result = await craftCollection.findOne(query);
+      res.send(result);
+    });
+
     app.post("/craft", async (req, res) => {
       const craft = req.body;
       const result = await craftCollection.insertOne(craft);
