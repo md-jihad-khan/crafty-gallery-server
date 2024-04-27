@@ -41,7 +41,6 @@ async function run() {
     app.get("/crafts/:email", async (req, res) => {
       const email = req.params.email;
       const customization = req.query.customization;
-
       const query = {
         user_Email: email,
       };
@@ -49,7 +48,6 @@ async function run() {
       if (customization) {
         query.customization = customization;
       }
-
       const cursor = craftCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
@@ -58,6 +56,35 @@ async function run() {
     app.post("/craft", async (req, res) => {
       const craft = req.body;
       const result = await craftCollection.insertOne(craft);
+      res.send(result);
+    });
+
+    app.put("/craft/:id", async (req, res) => {
+      const id = req.params.id;
+      const craft = req.body;
+
+      const filter = { _id: new ObjectId(id) };
+      const updatedCraft = {
+        $set: {
+          name: craft.name,
+          subcategory: craft.subcategory,
+          price: craft.price,
+          rating: craft.rating,
+          customization: craft.customization,
+          processing_time: craft.processing_time,
+          stockStatus: craft.stockStatus,
+          photo_url: craft.photo_url,
+          description: craft.description,
+        },
+      };
+      const result = await craftCollection.updateOne(filter, updatedCraft);
+      res.send(result);
+    });
+
+    app.delete("/craft/:id", async (req, res) => {
+      const id = req.params;
+      const query = { _id: new ObjectId(id) };
+      const result = await craftCollection.deleteOne(query);
       res.send(result);
     });
     // Send a ping to confirm a successful connection
