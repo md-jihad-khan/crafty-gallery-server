@@ -43,6 +43,17 @@ async function run() {
       const result = await craftCollection.findOne(query);
       res.send(result);
     });
+
+    app.get("/category/:name", async (req, res) => {
+      const name = decodeURIComponent(req.params.name);
+      const query = {
+        subcategory: name,
+      };
+      const cursor = craftCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     app.get("/crafts/:email", async (req, res) => {
       const email = req.params.email;
       const customization = req.query.customization;
