@@ -33,9 +33,19 @@ async function run() {
     });
 
     app.get("/craft/:id", async (req, res) => {
-      const id = req.params;
+      const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await craftCollection.findOne(query);
+      res.send(result);
+    });
+    app.get("/crafts/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = {
+        user_Email: email,
+      };
+      console.log(query);
+      const cursor = craftCollection.find(query);
+      const result = await cursor.toArray();
       res.send(result);
     });
 
